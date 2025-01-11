@@ -16,10 +16,16 @@ print(t3)
 myBC = Blockchain()
 myBC.display_chain()
 
-myBC.add_block(t1)
-myBC.add_block(t2)
-myBC.add_block(t3)
+myBC.add_block(t1,1)
+myBC.add_block(t2,2)
+myBC.add_block(t3,3)
 
 myBC.display_chain()
+print(myBC.valid_chain())
+
+print(myBC.last_block())
+
+last_block = myBC.last_block()
+
 
 

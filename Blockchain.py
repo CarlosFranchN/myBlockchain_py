@@ -1,11 +1,14 @@
 from Block import Block
-
+import json
 import uuid
+import hashlib
+
 
 
 class Blockchain:
     def __init__(self):
         self.chain = [self.create_genesis()]
+
 
 
 
@@ -17,30 +20,31 @@ class Blockchain:
 
 
     def create_genesis(self):
-        genesis = Block(0,"0","Genesis")
+        genesis = Block(0,"0","Genesis",1)
         return genesis
         
-    def add_block(self, transaction):
-        id = str(uuid.uuid4())
+    def add_block(self, transaction, proof):
+        id = self.last_block().id + 1
         previous_hash = self.chain[-1].hash
-        new_block = Block(id=id,previous_hash=previous_hash,transaction=transaction)
+        new_block = Block(id=id,previous_hash=previous_hash,transaction=transaction, proof=proof)
         self.chain.append(new_block)
         print(f"Block adicionado")
 
     def valid_chain(self):
-        for id in range(1,len(self.chain)):
-            block = self.chain[id]
-            prev_block = self.chain[id - 1]
+        for id in range(2,len(self.chain)):
+            block = self.chain[id].__dict__
+            prev_block = self.chain[id - 1].__dict__
 
-            if block.hash != block.create_hash():
-                print(block.id)
-                return False
-            
-            if prev_block.hash != block.previous_hash:
-                
+            if block['previous_hash'] != prev_block['hash']:
+                print(block)
                 return False
             
         return True
+    def last_block(self):
+        return self.chain[-1]
+       
+
+    
 
 
 
